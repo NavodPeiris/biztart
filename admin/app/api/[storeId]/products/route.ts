@@ -14,6 +14,7 @@ export async function POST(
 
     const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
 
+
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
     }
@@ -44,17 +45,6 @@ export async function POST(
 
     if (!params.storeId) {
       return new NextResponse("Store id is required", { status: 400 });
-    }
-
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-        userId
-      }
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
     }
 
     const product = await prismadb.product.create({

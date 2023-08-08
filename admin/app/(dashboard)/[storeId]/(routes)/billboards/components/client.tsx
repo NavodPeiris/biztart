@@ -13,10 +13,11 @@ import { columns, BillboardColumn } from "./columns";
 
 interface BillboardClientProps {
   data: BillboardColumn[];
+  level: String
 }
 
 export const BillboardClient: React.FC<BillboardClientProps> = ({
-  data
+  data, level
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -31,9 +32,14 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="label" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Billboards" />
-      <Separator />
-      <ApiList entityName="billboards" entityIdName="billboardId" />
+      
+      {level == "admin" && (
+        <>
+        <Heading title="API" description="API Calls for Billboards" />
+        <Separator />
+        <ApiList entityName="billboards" entityIdName="billboardId" />
+        </>
+      )} 
     </>
   );
 };

@@ -12,11 +12,12 @@ import { ApiList } from "@/components/ui/api-list";
 import { columns, ColorColumn } from "./columns";
 
 interface ColorClientProps {
-  data: ColorColumn[];
+  data: ColorColumn[],
+  level: String
 }
 
 export const ColorClient: React.FC<ColorClientProps> = ({
-  data
+  data, level
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -31,9 +32,14 @@ export const ColorClient: React.FC<ColorClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Colors" />
-      <Separator />
-      <ApiList entityName="colors" entityIdName="colorId" />
+      
+      {level == "admin" && (
+        <>
+          <Heading title="API" description="API Calls for Colors" />
+          <Separator />
+          <ApiList entityName="colors" entityIdName="colorId" />
+        </>
+      )}
     </>
   );
 };

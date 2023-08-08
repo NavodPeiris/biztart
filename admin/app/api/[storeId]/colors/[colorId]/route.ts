@@ -40,17 +40,6 @@ export async function DELETE(
       return new NextResponse("Color id is required", { status: 400 });
     }
 
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-        userId
-      }
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
-    }
-
     const color = await prismadb.color.delete({
       where: {
         id: params.colorId
@@ -91,17 +80,6 @@ export async function PATCH(
 
     if (!params.colorId) {
       return new NextResponse("Color id is required", { status: 400 });
-    }
-
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-        userId
-      }
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
     }
 
     const color = await prismadb.color.update({

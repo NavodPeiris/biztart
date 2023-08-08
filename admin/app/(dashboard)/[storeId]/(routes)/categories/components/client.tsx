@@ -13,11 +13,12 @@ import { columns, CategoryColumn } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
 
 interface CategoriesClientProps {
-  data: CategoryColumn[];
+  data: CategoryColumn[],
+  level: String
 }
 
 export const CategoriesClient: React.FC<CategoriesClientProps> = ({
-  data
+  data, level
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -32,9 +33,14 @@ export const CategoriesClient: React.FC<CategoriesClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Categories" />
-      <Separator />
-      <ApiList entityName="categories" entityIdName="categoryId" />
+      
+      {level == "admin" && (
+        <>
+          <Heading title="API" description="API Calls for Categories" />
+          <Separator />
+          <ApiList entityName="categories" entityIdName="categoryId" />
+        </>
+      )}
     </>
   );
 };

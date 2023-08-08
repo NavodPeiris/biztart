@@ -5,7 +5,7 @@ import { useParams, usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils"
 
-export function MainNav({
+export function ContentNav({
   className,
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
@@ -13,11 +13,6 @@ export function MainNav({
   const params = useParams();
 
   const routes = [
-    {
-      href: `/${params.storeId}`,
-      label: 'Overview',
-      active: pathname === `/${params.storeId}`,
-    },
     {
       href: `/${params.storeId}/billboards`,
       label: 'Billboards',
@@ -37,27 +32,7 @@ export function MainNav({
       href: `/${params.storeId}/colors`,
       label: 'Colors',
       active: pathname === `/${params.storeId}/colors`,
-    },
-    {
-      href: `/${params.storeId}/products`,
-      label: 'Products',
-      active: pathname === `/${params.storeId}/products`,
-    },
-    {
-      href: `/${params.storeId}/orders`,
-      label: 'Orders',
-      active: pathname === `/${params.storeId}/orders`,
-    },
-    {
-      href: `/${params.storeId}/users`,
-      label: 'Users',
-      active: pathname === `/${params.storeId}/users`,
-    },
-    {
-      href: `/${params.storeId}/settings`,
-      label: 'Settings',
-      active: pathname === `/${params.storeId}/settings`,
-    },
+    }
   ]
 
   return (

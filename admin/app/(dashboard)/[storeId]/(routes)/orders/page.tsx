@@ -5,13 +5,33 @@ import { formatter } from "@/lib/utils";
 
 import { OrderColumn } from "./components/columns"
 import { OrderClient } from "./components/client";
-
+import { auth } from "@clerk/nextjs";
 
 const OrdersPage = async ({
   params
 }: {
   params: { storeId: string }
 }) => {
+
+  const {userId} = auth();
+
+  var level = "admin"
+
+  if(!userId){
+    console.log("no user")
+  }
+  else{
+    const userInDB = await prismadb.user.findFirst({
+      where: {
+        id: userId
+      }
+    })
+
+    if(userInDB?.level){
+      level = userInDB.level
+    }
+  }
+
   const orders = await prismadb.order.findMany({
     where: {
       storeId: params.storeId
@@ -43,7 +63,7 @@ const OrdersPage = async ({
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-        <OrderClient data={formattedOrders} />
+        <OrderClient data={formattedOrders} level={level}/>
       </div>
     </div>
   );

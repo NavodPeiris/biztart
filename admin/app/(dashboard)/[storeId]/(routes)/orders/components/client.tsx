@@ -7,7 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { columns, OrderColumn } from "./columns";
 
 interface OrderClientProps {
-  data: OrderColumn[];
+  data: OrderColumn[],
+  level: String
 }
 
 export const OrderClient: React.FC<OrderClientProps> = ({

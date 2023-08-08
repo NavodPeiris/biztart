@@ -1,5 +1,5 @@
-import { SignUp } from "@clerk/nextjs";
+import { Register} from "@/components/modals/create-account";
 
 export default function Page() {
-  return <SignUp />;
+  return <Register/>;
 };

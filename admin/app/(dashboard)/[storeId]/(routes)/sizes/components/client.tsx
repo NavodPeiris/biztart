@@ -12,11 +12,12 @@ import { ApiList } from "@/components/ui/api-list";
 import { columns, SizeColumn } from "./columns";
 
 interface SizesClientProps {
-  data: SizeColumn[];
+  data: SizeColumn[],
+  level: String
 }
 
 export const SizesClient: React.FC<SizesClientProps> = ({
-  data
+  data, level
 }) => {
   const params = useParams();
   const router = useRouter();
@@ -31,9 +32,14 @@ export const SizesClient: React.FC<SizesClientProps> = ({
       </div>
       <Separator />
       <DataTable searchKey="name" columns={columns} data={data} />
-      <Heading title="API" description="API Calls for Sizes" />
-      <Separator />
-      <ApiList entityName="sizes" entityIdName="sizeId" />
+      
+      {level == "admin" && (
+        <>
+          <Heading title="API" description="API Calls for Sizes" />
+          <Separator />
+          <ApiList entityName="sizes" entityIdName="sizeId" />
+        </>
+      )}
     </>
   );
 };

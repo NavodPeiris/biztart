@@ -36,7 +36,7 @@ export async function DELETE(
   { params }: { params: { productId: string, storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const { userId} = auth();
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 403 });
@@ -44,17 +44,6 @@ export async function DELETE(
 
     if (!params.productId) {
       return new NextResponse("Product id is required", { status: 400 });
-    }
-
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-        userId
-      }
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
     }
 
     const product = await prismadb.product.delete({
@@ -76,7 +65,7 @@ export async function PATCH(
   { params }: { params: { productId: string, storeId: string } }
 ) {
   try {
-    const { userId } = auth();
+    const { userId} = auth();
 
     const body = await req.json();
 
@@ -112,17 +101,6 @@ export async function PATCH(
 
     if (!sizeId) {
       return new NextResponse("Size id is required", { status: 400 });
-    }
-
-    const storeByUserId = await prismadb.store.findFirst({
-      where: {
-        id: params.storeId,
-        userId
-      }
-    });
-
-    if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
     }
 
     await prismadb.product.update({

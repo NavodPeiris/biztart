@@ -10,7 +10,7 @@ const SettingsPage = async ({
 }: {
   params: { storeId: string }
 }) => {
-  const { userId } = auth();
+  const { userId} = auth();
 
   if (!userId) {
     redirect('/sign-in');
@@ -19,7 +19,7 @@ const SettingsPage = async ({
   const store = await prismadb.store.findFirst({
     where: {
       id: params.storeId,
-      userId
+      userId: userId
     }
   });
 
