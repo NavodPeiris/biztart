@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 
 import { stripe } from "@/lib/stripe";
 import prismadb from "@/lib/prismadb";
+import fs from 'fs';
+import path from 'path';
+import { format } from 'date-fns';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -29,6 +32,9 @@ export async function POST(
       id: {
         in: productIds
       }
+    },
+    include: {
+      category: true
     }
   });
 
@@ -45,6 +51,26 @@ export async function POST(
         unit_amount: product.price.toNumber() * 100
       }
     });
+
+    const date = format(new Date(), 'yyyy/MM/dd');
+
+    // Construct the data row
+    const dataRow = `${date},${product.category},${product.price.toNumber()}\n`;
+
+    // Define the path to the CSV file
+    const filePath = path.resolve('forecast/sales.csv');
+
+    //add to csv file
+    fs.appendFile(filePath, dataRow, (err) => {
+      if (err) {
+        console.log("error", err);
+      }
+      else{
+        console.log("added sales to csv");
+      }
+      
+    });
+
   });
 
   const order = await prismadb.order.create({

@@ -9,6 +9,9 @@ import { getSalesCount } from "@/actions/get-sales-count";
 import { getGraphRevenue } from "@/actions/get-graph-revenue";
 import { getStockCount } from "@/actions/get-stock-count";
 import { formatter } from "@/lib/utils";
+import prismadb from '@/lib/prismadb';
+import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 interface DashboardPageProps {
   params: {
@@ -19,6 +22,40 @@ interface DashboardPageProps {
 const DashboardPage: React.FC<DashboardPageProps> = async ({ 
   params
 }) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    redirect('/sign-in');
+  }
+
+  const userInDB = await prismadb.user.findFirst({
+    where: {
+      id: userId
+    }
+  })
+
+  var store
+
+  if(userInDB?.level == "content"){
+    const adminUserId = userInDB?.createdby
+    store = await prismadb.store.findFirst({
+      where: {
+        userId: adminUserId
+      }
+    });
+    redirect(`/${params.storeId}/billboards`)
+  }
+
+  if(userInDB?.level == "product"){
+    const adminUserId = userInDB?.createdby
+    store = await prismadb.store.findFirst({
+      where: {
+        userId: adminUserId
+      }
+    });
+    redirect(`/${params.storeId}/products`)
+  }
+
   const totalRevenue = await getTotalRevenue(params.storeId);
   const graphRevenue = await getGraphRevenue(params.storeId);
   const salesCount = await getSalesCount(params.storeId);
